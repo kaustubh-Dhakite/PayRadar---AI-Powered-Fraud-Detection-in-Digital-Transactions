@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Model Monitor{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Model Monitor</h1>
+  <p class="page-sub">XGBoost performance metrics and prediction analytics</p>
+</div>
+
+<div class="kpi-grid" id="modelKPIs"></div>
+
+<div class="charts-grid">
+  <div class="card">
+    <h3 class="card-title">Decision Distribution (last 30 days)</h3>
+    <div id="chartDecision" style="height:280px"></div>
+  </div>
+  <div class="card">
+    <h3 class="card-title">Most Triggered Rules</h3>
+    <div id="chartRules" style="height:280px"></div>
+  </div>
+  <div class="card">
+    <h3 class="card-title">Top 10 Feature Importances</h3>
+    <div id="chartFeatures" style="height:280px"></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3 class="card-title">Model Information</h3>
+  <div id="modelInfo" style="margin-top:1rem"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const LAYOUT = {
+  paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)',
+  font:{color:'#374151',size:11}, margin:{t:10,b:40,l:120,r:10},
+};
+
+async function loadModelStats(){
+  const res  = await fetch('/api/model-stats');
+  const data = await res.json();
+
+  // KPI cards
+  const kpis = [
+    {label:'Total Predictions', value: data.total_predictions?.toLocaleString() || '0', icon:'📊'},
+    {label:'Total Blocked',     value: data.total_blocked?.toLocaleString() || '0',     icon:'🚫'},
+    {label:'Override Rate',     value: ((data.override_rate||0)*100).toFixed(1)+'%',    icon:'↩️'},
+    {label:'Avg Risk Score',    value: ((data.avg_fraud_prob||0)*100).toFixed(1)+'%',   icon:'📈'},
+  ];
+  document.getElementById('modelKPIs').innerHTML = kpis.map(k=>`
+    <div class="kpi-card kpi-info">
+      <div class="kpi-icon">${k.icon}</div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-label">${k.label}</div>
+    </div>`).join('');
+
+  // Decision distribution stacked area
+  const daily = data.daily_distribution || [];
+  Plotly.newPlot('chartDecision',[
+    {x:daily.map(d=>d.date),y:daily.map(d=>d.approved),name:'Approve',stackgroup:'one',fillcolor:'rgba(5,150,105,.4)',line:{color:'#059669'}},
+    {x:daily.map(d=>d.date),y:daily.map(d=>d.review),  name:'Review', stackgroup:'one',fillcolor:'rgba(217,119,6,.4)', line:{color:'#D97706'}},
+    {x:daily.map(d=>d.date),y:daily.map(d=>d.blocked), name:'Block',  stackgroup:'one',fillcolor:'rgba(220,38,38,.4)', line:{color:'#DC2626'}},
+  ],{...LAYOUT,margin:{t:10,b:40,l:40,r:10},showlegend:true},{displayModeBar:false});
+
+  // Rule trigger counts
+  const rc = data.rule_trigger_counts || {};
+  const rKeys = Object.keys(rc).sort((a,b)=>rc[b]-rc[a]);
+  Plotly.newPlot('chartRules',[{
+    x:rKeys.map(k=>rc[k]), y:rKeys, type:'bar', orientation:'h',
+    marker:{color:'#1E40AF'},
+  }],{...LAYOUT,xaxis:{title:'Trigger Count'}},{displayModeBar:false});
+
+  // Feature importances
+  const fi = data.feature_importances || [];
+  Plotly.newPlot('chartFeatures',[{
+    x:fi.map(f=>f.importance), y:fi.map(f=>f.feature), type:'bar', orientation:'h',
+    marker:{color:'#0F766E'},
+  }],{...LAYOUT,xaxis:{title:'Importance'}},{displayModeBar:false});
+
+  // Model info
+  document.getElementById('modelInfo').innerHTML = `
+    <div class="form-grid-2">
+      <div><span class="muted">Model Version:</span> <strong>${data.model_version||'1.0.0'}</strong></div>
+      <div><span class="muted">Total Predictions:</span> <strong>${data.total_predictions||0}</strong></div>
+      <div><span class="muted">Total Overrides:</span> <strong>${data.total_overrides||0}</strong></div>
+      <div><span class="muted">Override Rate:</span> <strong>${((data.override_rate||0)*100).toFixed(2)}%</strong></div>
+    </div>`;
+}
+loadModelStats();
+</script>
+{% endblock %}

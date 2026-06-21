@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Cases{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Case Management</h1>
+  <p class="page-sub">Investigate and resolve flagged transactions</p>
+</div>
+
+<div class="card filters-card">
+  <div class="filters-row">
+    <div class="form-group">
+      <label>Status</label>
+      <select id="fStatus" onchange="loadCases()">
+        <option value="">All</option>
+        <option value="Open">Open</option>
+        <option value="Under Investigation">Under Investigation</option>
+        <option value="Escalated">Escalated</option>
+        <option value="Resolved">Resolved</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Priority</label>
+      <select id="fPriority" onchange="loadCases()">
+        <option value="">All</option>
+        <option value="Critical">Critical</option>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr>
+        <th>Case #</th><th>TXN ID</th><th>Amount</th><th>Status</th>
+        <th>Priority</th><th>Assigned To</th><th>Opened</th><th>Actions</th>
+      </tr></thead>
+      <tbody id="casesBody"><tr><td colspan="8" class="empty-row">Loading…</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Case Detail Modal -->
+<div id="caseModal" class="modal-overlay hidden">
+  <div class="modal-box modal-lg">
+    <div class="modal-header">
+      <h3 id="caseModalTitle">Case Detail</h3>
+      <button class="modal-close" onclick="closeModal('caseModal')">✕</button>
+    </div>
+    <div class="modal-body" id="caseModalBody"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/cases.js"></script>
+{% endblock %}

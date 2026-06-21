@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Login — PayRadar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<style>
+  body{background:#F1F5F9;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0}
+  .login-wrap{width:100%;max-width:420px;padding:1rem}
+  .login-card{background:#fff;border:1px solid #E2E8F0;border-radius:16px;padding:2.5rem;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
+  .login-logo{text-align:center;margin-bottom:2rem}
+  .login-logo-icon{font-size:3rem;display:block;margin-bottom:.5rem}
+  .login-logo-text{font-size:1.8rem;font-weight:700;color:#1E40AF;letter-spacing:-.5px}
+  .login-logo-sub{font-size:.85rem;color:#64748B;margin-top:4px}
+  .login-error{background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;border-radius:8px;padding:10px 14px;font-size:.875rem;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+  .input-group{position:relative;margin-bottom:1rem}
+  .input-group label{display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:6px}
+  .input-group .input-icon{position:absolute;left:12px;bottom:11px;color:#94A3B8;font-size:1rem}
+  .input-group input{width:100%;padding:10px 40px 10px 36px;border:1px solid #E2E8F0;border-radius:8px;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .2s;box-sizing:border-box}
+  .input-group input:focus{border-color:#1E40AF;box-shadow:0 0 0 3px rgba(30,64,175,.1)}
+  .toggle-pw{position:absolute;right:12px;bottom:11px;cursor:pointer;color:#94A3B8;font-size:.9rem;background:none;border:none;padding:0}
+  .btn-login{width:100%;padding:12px;background:#1E40AF;color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:.5rem}
+  .btn-login:hover{background:#1D3A9E}
+  .login-footer{text-align:center;margin-top:2rem;font-size:.78rem;color:#94A3B8}
+  .login-warning{text-align:center;margin-top:1rem;font-size:.8rem;color:#D97706;background:#FFFBEB;border:1px solid #FDE68A;border-radius:6px;padding:8px}
+</style>
+</head>
+<body>
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">
+      <span class="login-logo-icon">🛡️</span>
+      <div class="login-logo-text">PayRadar</div>
+      <div class="login-logo-sub">Internal Fraud Operations Portal</div>
+    </div>
+
+    {% if error %}
+    <div class="login-error">⚠️ {{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="/login">
+      <div class="input-group">
+        <label for="username">Username</label>
+        <span class="input-icon">👤</span>
+        <input type="text" id="username" name="username" placeholder="Enter username" required autocomplete="username"/>
+      </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <span class="input-icon">🔒</span>
+        <input type="password" id="password" name="password" placeholder="Enter password" required autocomplete="current-password"/>
+        <button type="button" class="toggle-pw" onclick="togglePw()">👁</button>
+      </div>
+      <button type="submit" class="btn-login">Login</button>
+    </form>
+
+    <div class="login-warning">⚠️ Authorised Bank Personnel Only</div>
+    <div class="login-footer">© 2026 PayRadar · All access is monitored and logged</div>
+  </div>
+</div>
+<script>
+function togglePw(){
+  const pw=document.getElementById('password');
+  pw.type=pw.type==='password'?'text':'password';
+}
+</script>
+</body>
+</html>

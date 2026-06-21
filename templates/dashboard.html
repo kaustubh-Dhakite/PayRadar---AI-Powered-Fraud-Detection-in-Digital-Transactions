@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Live Dashboard</h1>
+    <p class="page-sub">Real-time fraud monitoring · Auto-refreshes every 5 seconds</p>
+  </div>
+  <div class="stream-controls">
+    <select id="streamSpeed" class="select-sm">
+      <option value="5000">Slow (5s)</option>
+      <option value="3000" selected>Normal (3s)</option>
+      <option value="1000">Fast (1s)</option>
+    </select>
+    <button id="btnStream" class="btn btn-primary" onclick="toggleStream()">▶ Start Live Stream</button>
+  </div>
+</div>
+
+<!-- KPI Cards -->
+<div class="kpi-grid">
+  <div class="kpi-card kpi-success">
+    <div class="kpi-icon">✅</div>
+    <div class="kpi-value" id="kpiSafe">—</div>
+    <div class="kpi-label">Safe Transactions</div>
+    <div class="kpi-pct" id="kpiSafePct"></div>
+  </div>
+  <div class="kpi-card kpi-warning">
+    <div class="kpi-icon">⚠️</div>
+    <div class="kpi-value" id="kpiReview">—</div>
+    <div class="kpi-label">Medium Risk Alerts</div>
+  </div>
+  <div class="kpi-card kpi-danger">
+    <div class="kpi-icon">🚨</div>
+    <div class="kpi-value" id="kpiBlocked">—</div>
+    <div class="kpi-label">High Risk Fraud</div>
+  </div>
+  <div class="kpi-card kpi-info">
+    <div class="kpi-icon">📊</div>
+    <div class="kpi-value" id="kpiAvg">—</div>
+    <div class="kpi-label">Avg Risk Score</div>
+  </div>
+</div>
+
+<!-- Charts -->
+<div class="charts-grid">
+  <div class="card">
+    <h3 class="card-title">Decision Distribution</h3>
+    <div id="chartDonut" style="height:260px"></div>
+  </div>
+  <div class="card">
+    <h3 class="card-title">Transactions per Hour (last 24h)</h3>
+    <div id="chartLine" style="height:260px"></div>
+  </div>
+  <div class="card">
+    <h3 class="card-title">Risk Score Distribution</h3>
+    <div id="chartBar" style="height:260px"></div>
+  </div>
+</div>
+
+<!-- Live Transaction Table -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Live Transaction Feed</h3>
+    <span class="badge badge-live" id="liveBadge">● LIVE</span>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr>
+        <th>TXN ID</th><th>Type</th><th>Amount</th><th>Account</th>
+        <th>ML Score</th><th>Final Score</th><th>Decision</th><th>Time</th>
+      </tr></thead>
+      <tbody id="txnBody"><tr><td colspan="8" class="empty-row">Loading…</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+{% if user.role == 'admin' %}
+<!-- Model Performance (Admin only) -->
+<div class="card" id="modelSection">
+  <h3 class="card-title">Model Performance</h3>
+  <div id="modelMetrics" class="kpi-grid" style="margin-top:1rem"></div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}

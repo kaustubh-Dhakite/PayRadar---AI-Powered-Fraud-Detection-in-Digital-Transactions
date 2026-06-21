@@ -1,0 +1,87 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+.venv/
+env/
+ENV/
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.local
+.env.*.local
+
+# =========================
+# Database Files
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# Build / Distribution
+# =========================
+build/
+dist/
+*.egg-info/
+*.egg
+*.spec
+
+# =========================
+# Model Artifacts
+# (Comment these if you want
+# to upload trained models)
+# =========================
+# models/*.pkl
+# models/*.joblib
+
+# =========================
+# Dataset Files
+# =========================
+data/raw/*.csv
+Dataset/*.csv
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+.kiro/
+
+# VS Code Temporary Files
+tempCodeRunnerFile
+tempCodeRunnerFile.py
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Testing / Coverage
+# =========================
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# =========================
+# Operating System
+# =========================
+.DS_Store
+Thumbs.db

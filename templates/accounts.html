@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Accounts{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Account Registry</h1>
+  <p class="page-sub">Monitor and manage customer accounts</p>
+</div>
+
+<div class="card filters-card">
+  <div class="filters-row">
+    <div class="form-group">
+      <label>Status</label>
+      <select id="fStatus" onchange="loadAccounts()">
+        <option value="">All</option>
+        <option value="Active">Active</option>
+        <option value="Frozen">Frozen</option>
+        <option value="Under Review">Under Review</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Search Account ID</label>
+      <input type="text" id="fSearch" placeholder="e.g. ACC-1234" oninput="loadAccounts()"/>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr>
+        <th>Account ID</th><th>Status</th><th>Total Txns</th><th>Fraud Flags</th>
+        <th>Avg Risk</th><th>First Seen</th><th>Last Seen</th><th>Actions</th>
+      </tr></thead>
+      <tbody id="acctBody"><tr><td colspan="8" class="empty-row">Loading…</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Account Profile Modal -->
+<div id="acctModal" class="modal-overlay hidden">
+  <div class="modal-box modal-lg">
+    <div class="modal-header">
+      <h3 id="acctModalTitle">Account Profile</h3>
+      <button class="modal-close" onclick="closeModal('acctModal')">✕</button>
+    </div>
+    <div class="modal-body" id="acctModalBody"></div>
+  </div>
+</div>
+
+<!-- Freeze Modal -->
+<div id="freezeModal" class="modal-overlay hidden">
+  <div class="modal-box" style="max-width:420px">
+    <div class="modal-header">
+      <h3>Freeze Account</h3>
+      <button class="modal-close" onclick="closeModal('freezeModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>Account: <code id="freezeAcctId"></code></p>
+      <div class="form-group" style="margin-top:1rem">
+        <label>Reason (required)</label>
+        <textarea id="freezeReason" rows="3" placeholder="Reason for freezing..."
+          style="width:100%;padding:8px;border:1px solid #E2E8F0;border-radius:6px;font-family:inherit;box-sizing:border-box"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:1rem">
+        <button class="btn btn-secondary" onclick="closeModal('freezeModal')">Cancel</button>
+        <button class="btn btn-danger" onclick="confirmFreeze()">Confirm Freeze</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>const USER_ROLE = "{{ user.role }}";</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/accounts.js"></script>
+{% endblock %}

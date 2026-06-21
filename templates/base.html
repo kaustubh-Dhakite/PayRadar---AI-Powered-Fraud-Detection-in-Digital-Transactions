@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}PayRadar{% endblock %} — Fraud Detection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SIDEBAR
+════════════════════════════════════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="sidebar-logo-icon">🛡️</span>
+    <span class="sidebar-logo-text">PayRadar</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a href="/" class="nav-item {% if request.url.path == '/' %}active{% endif %}">
+      <i data-lucide="layout-dashboard" class="nav-icon"></i>
+      <span>Dashboard</span>
+    </a>
+    <a href="/predict-page" class="nav-item {% if request.url.path == '/predict-page' %}active{% endif %}">
+      <i data-lucide="search" class="nav-icon"></i>
+      <span>Predict</span>
+    </a>
+    <a href="/history-page" class="nav-item {% if request.url.path == '/history-page' %}active{% endif %}">
+      <i data-lucide="clock" class="nav-icon"></i>
+      <span>History</span>
+    </a>
+    <a href="/cases" class="nav-item {% if request.url.path == '/cases' %}active{% endif %}">
+      <i data-lucide="folder-open" class="nav-icon"></i>
+      <span>Cases</span>
+    </a>
+    <a href="/accounts" class="nav-item {% if request.url.path == '/accounts' %}active{% endif %}">
+      <i data-lucide="users" class="nav-icon"></i>
+      <span>Accounts</span>
+    </a>
+
+    {% if user.role == 'admin' %}
+    <div class="nav-divider"></div>
+    <span class="nav-section-label">Admin</span>
+    <a href="/settings" class="nav-item {% if request.url.path == '/settings' %}active{% endif %}">
+      <i data-lucide="settings" class="nav-icon"></i>
+      <span>Settings</span>
+    </a>
+    <a href="/users" class="nav-item {% if request.url.path == '/users' %}active{% endif %}">
+      <i data-lucide="user-cog" class="nav-icon"></i>
+      <span>Users</span>
+    </a>
+    <a href="/model-monitor" class="nav-item {% if request.url.path == '/model-monitor' %}active{% endif %}">
+      <i data-lucide="activity" class="nav-icon"></i>
+      <span>Model Monitor</span>
+    </a>
+    {% endif %}
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">{{ user.username[0].upper() }}</div>
+      <div class="sidebar-user-info">
+        <span class="sidebar-username">{{ user.username }}</span>
+        <span class="role-badge role-{{ user.role }}">{{ user.role }}</span>
+      </div>
+    </div>
+    <form action="/logout" method="post" style="margin:0">
+      <button type="submit" class="logout-btn" title="Logout">
+        <i data-lucide="log-out"></i>
+      </button>
+    </form>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════════════════════════════ -->
+<main class="main-content">
+  {% block content %}{% endblock %}
+</main>
+
+<!-- Toast container -->
+<div id="toast-container" class="toast-container"></div>
+
+<script>
+  // Initialize Lucide icons
+  lucide.createIcons();
+
+  // Global toast function
+  function showToast(message, type = 'info', duration = 4000) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    const icons = { success: 'check-circle', error: 'x-circle', warning: 'alert-triangle', info: 'info' };
+    toast.innerHTML = `
+      <i data-lucide="${icons[type] || 'info'}" style="width:16px;height:16px;flex-shrink:0"></i>
+      <span>${message}</span>
+      <button onclick="this.parentElement.remove()" class="toast-close">&times;</button>
+    `;
+    container.appendChild(toast);
+    lucide.createIcons();
+    setTimeout(() => { if (toast.parentElement) toast.remove(); }, duration);
+  }
+
+  // Format currency
+  function formatCurrency(val) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
+  }
+
+  // Format probability as percentage
+  function formatPct(val) {
+    return (val * 100).toFixed(1) + '%';
+  }
+
+  // Decision badge HTML
+  function decisionBadge(decision) {
+    const cls = { APPROVE: 'badge-approve', REVIEW: 'badge-review', BLOCK: 'badge-block' };
+    return `<span class="badge ${cls[decision] || ''}">${decision}</span>`;
+  }
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

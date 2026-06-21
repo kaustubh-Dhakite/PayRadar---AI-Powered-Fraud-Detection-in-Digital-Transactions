@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}Predict{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Transaction Checker</h1>
+  <p class="page-sub">Run ML + rules analysis on a transaction</p>
+</div>
+
+<div class="predict-grid">
+  <!-- Input Form -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Transaction Details</h3>
+      <button class="btn btn-secondary btn-sm" onclick="loadRandom()">🎲 Random</button>
+    </div>
+
+    <!-- Account status banner -->
+    <div id="acctBanner" class="acct-banner hidden"></div>
+    <!-- Velocity warning -->
+    <div id="velBanner" class="vel-banner hidden"></div>
+
+    <form id="predictForm">
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>Transaction Type</label>
+          <select id="fType" name="type">
+            <option value="TRANSFER">TRANSFER</option>
+            <option value="CASH_OUT">CASH_OUT</option>
+            <option value="CASH_IN">CASH_IN</option>
+            <option value="PAYMENT">PAYMENT</option>
+            <option value="DEBIT">DEBIT</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Step (Hour)</label>
+          <input type="number" id="fStep" value="1" min="1" max="744"/>
+        </div>
+        <div class="form-group">
+          <label>Amount ($)</label>
+          <input type="number" id="fAmount" placeholder="e.g. 50000" min="0" step="0.01"/>
+        </div>
+        <div class="form-group">
+          <label>Sender Account ID</label>
+          <input type="text" id="fOrigAcc" placeholder="e.g. ACC-1234" oninput="onAcctInput(this.value)"/>
+        </div>
+        <div class="form-group">
+          <label>Receiver Account ID</label>
+          <input type="text" id="fDestAcc" placeholder="e.g. ACC-5678"/>
+        </div>
+        <div class="form-group">
+          <label>Sender Balance Before ($)</label>
+          <input type="number" id="fOldOrg" placeholder="e.g. 200000" min="0" step="0.01"/>
+        </div>
+        <div class="form-group">
+          <label>Sender Balance After ($)</label>
+          <input type="number" id="fNewOrig" placeholder="e.g. 150000" min="0" step="0.01"/>
+        </div>
+        <div class="form-group">
+          <label>Receiver Balance Before ($)</label>
+          <input type="number" id="fOldDest" placeholder="e.g. 0" min="0" step="0.01"/>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary btn-full" id="btnCheck" onclick="submitPredict()">
+        🔍 Check for Fraud
+      </button>
+    </form>
+  </div>
+
+  <!-- Result Panel -->
+  <div class="card" id="resultPanel" style="display:none">
+    <h3 class="card-title">Analysis Result</h3>
+
+    <div class="verdict-banner" id="verdictBanner">
+      <div class="verdict-icon" id="verdictIcon"></div>
+      <div>
+        <div class="verdict-title" id="verdictTitle"></div>
+        <div class="verdict-sub" id="verdictSub"></div>
+      </div>
+    </div>
+
+    <div class="score-bars">
+      <div class="score-row">
+        <span class="score-lbl">Final Score</span>
+        <div class="score-track"><div class="score-fill" id="barFinal"></div></div>
+        <span class="score-val" id="valFinal"></span>
+      </div>
+      <div class="score-row">
+        <span class="score-lbl">ML Score</span>
+        <div class="score-track"><div class="score-fill" id="barML"></div></div>
+        <span class="score-val" id="valML"></span>
+      </div>
+      <div class="score-row">
+        <span class="score-lbl">Rules Score</span>
+        <div class="score-track"><div class="score-fill" id="barRule"></div></div>
+        <span class="score-val" id="valRule"></span>
+      </div>
+    </div>
+
+    <div id="rulesSection" style="display:none;margin-bottom:1rem">
+      <div class="section-label">⚡ Triggered Rules</div>
+      <div id="rulesTags" class="tags-row"></div>
+    </div>
+
+    <div style="margin-bottom:1rem">
+      <div class="section-label">🔎 Why This Decision?</div>
+      <ul id="reasonsList" class="reasons-list"></ul>
+    </div>
+
+    <div id="shapSection" style="margin-bottom:1rem">
+      <div class="section-label">📊 SHAP Feature Impact</div>
+      <div id="shapChart" style="height:200px"></div>
+    </div>
+
+    <div class="txn-id-row">
+      <span class="muted">Transaction ID:</span>
+      <code id="txnIdVal"></code>
+    </div>
+
+    <!-- Override button (BLOCK only) -->
+    <div id="overrideSection" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid #E2E8F0">
+      <div class="section-label">⚠️ Override This Decision</div>
+      <textarea id="overrideReason" placeholder="Reason for override (minimum 20 characters)" rows="3"
+        style="width:100%;padding:8px;border:1px solid #E2E8F0;border-radius:6px;font-family:inherit;font-size:.875rem;resize:vertical;box-sizing:border-box"></textarea>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('overrideSection').style.display='none'">Cancel</button>
+        <button class="btn btn-danger btn-sm" onclick="submitOverride()">Confirm Override</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Alert banner -->
+<div id="alertBanner" class="alert-banner hidden"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/predict.js"></script>
+{% endblock %}

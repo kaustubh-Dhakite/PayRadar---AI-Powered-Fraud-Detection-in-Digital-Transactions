@@ -1,0 +1,17 @@
+{
+  "model_version": "1.0.0",
+  "approve_threshold": 0.4,
+  "block_threshold": 0.7,
+  "primary_metric": "PR-AUC",
+  "metrics": {
+    "pr_auc": 0.5,
+    "best_variant": "Variant 2",
+    "precision_at_040": 0.8947,
+    "recall_at_040": 1.0,
+    "f1_at_040": 0.9444,
+    "precision_at_070": 0.8947,
+    "recall_at_070": 1.0,
+    "f1_at_070": 0.9444
+  },
+  "note": "No sklearn used. Pure numpy metrics."
+}

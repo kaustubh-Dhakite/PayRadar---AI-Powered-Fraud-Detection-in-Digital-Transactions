@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Users{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">User Management</h1>
+  <p class="page-sub">Manage analyst accounts</p>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Staff Accounts</h3>
+    <button class="btn btn-primary btn-sm" onclick="openCreateModal()">+ Add User</button>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr>
+        <th>Username</th><th>Full Name</th><th>Role</th><th>Email</th>
+        <th>Status</th><th>Last Login</th><th>Created By</th><th>Actions</th>
+      </tr></thead>
+      <tbody id="usersBody"><tr><td colspan="8" class="empty-row">Loading…</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Create User Modal -->
+<div id="createModal" class="modal-overlay hidden">
+  <div class="modal-box" style="max-width:460px">
+    <div class="modal-header">
+      <h3>Add New User</h3>
+      <button class="modal-close" onclick="closeModal('createModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Username</label><input type="text" id="newUsername" placeholder="e.g. analyst_priya"/></div>
+      <div class="form-group"><label>Full Name</label><input type="text" id="newFullName" placeholder="e.g. Priya Sharma"/></div>
+      <div class="form-group"><label>Email</label><input type="email" id="newEmail" placeholder="e.g. priya@payradar.bank"/></div>
+      <p class="muted" style="margin-top:.5rem;font-size:.8rem">Role: Analyst (Admin accounts cannot be created from UI)</p>
+      <div id="newPwBox" class="hidden" style="margin-top:1rem;padding:12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px">
+        <div style="font-size:.8rem;color:#166534;font-weight:600">Temporary Password (shown once):</div>
+        <code id="newPwVal" style="font-size:1rem;color:#166534"></code>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:1.5rem">
+        <button class="btn btn-secondary" onclick="closeModal('createModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="createUser()">Create User</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/users.js"></script>
+{% endblock %}

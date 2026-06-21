@@ -1,0 +1,2 @@
+# PayRadar - AI Powered Fraud Detection in Digital Transactions
+PayRadar is an AI-powered fraud detection and prevention platform that combines XGBoost machine learning, rule-based risk analysis, and real-time transaction monitoring to identify suspicious financial activities. It provides explainable predictions, fraud case management, account risk profiling, and interactive dashboards for banking operations. 

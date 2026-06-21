@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">System Settings</h1>
+  <p class="page-sub">Configure rules, thresholds, and scoring weights</p>
+</div>
+
+<!-- Rule Configuration -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Rule Configuration</h3>
+    <button class="btn btn-primary btn-sm" onclick="saveRules()">💾 Save Rules</button>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table" id="rulesTable">
+      <thead><tr>
+        <th>Rule ID</th><th>Name</th><th>Description</th>
+        <th>Weight</th><th>Threshold</th><th>Active</th>
+      </tr></thead>
+      <tbody id="rulesBody"><tr><td colspan="6" class="empty-row">Loading…</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Decision Thresholds -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Decision Thresholds</h3>
+    <button class="btn btn-primary btn-sm" onclick="saveThresholds()">💾 Save Thresholds</button>
+  </div>
+  <div class="form-grid-2">
+    <div class="form-group">
+      <label>APPROVE threshold (score &lt; this)</label>
+      <input type="number" id="tApprove" step="0.01" min="0" max="1" placeholder="0.40"/>
+    </div>
+    <div class="form-group">
+      <label>BLOCK threshold (score ≥ this)</label>
+      <input type="number" id="tBlock" step="0.01" min="0" max="1" placeholder="0.70"/>
+    </div>
+    <div class="form-group">
+      <label>CRITICAL threshold (score ≥ this)</label>
+      <input type="number" id="tCritical" step="0.01" min="0" max="1" placeholder="0.85"/>
+    </div>
+  </div>
+</div>
+
+<!-- Hybrid Score Weights -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Hybrid Score Weights</h3>
+    <button class="btn btn-primary btn-sm" onclick="saveThresholds()">💾 Save Weights</button>
+  </div>
+  <p class="muted" style="margin-bottom:1rem">ML Weight + Rules Weight must equal 1.0</p>
+  <div class="form-grid-2">
+    <div class="form-group">
+      <label>ML Weight</label>
+      <input type="number" id="wML" step="0.05" min="0" max="1" placeholder="0.60" oninput="syncWeights('ml')"/>
+    </div>
+    <div class="form-group">
+      <label>Rules Weight</label>
+      <input type="number" id="wRules" step="0.05" min="0" max="1" placeholder="0.40" oninput="syncWeights('rules')"/>
+    </div>
+  </div>
+  <div id="weightError" class="form-error hidden">⚠️ Weights must sum to 1.0</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/settings.js"></script>
+{% endblock %}

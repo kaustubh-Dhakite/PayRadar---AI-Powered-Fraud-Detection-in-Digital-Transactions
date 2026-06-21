@@ -1,0 +1,18 @@
+{
+  "feature_columns": [
+    "step",
+    "amount",
+    "oldbalanceOrg",
+    "newbalanceOrig",
+    "oldbalanceDest",
+    "newbalanceDest",
+    "type",
+    "orig_balance_delta",
+    "dest_balance_delta",
+    "orig_expected_gap",
+    "dest_expected_gap",
+    "amount_to_orig_balance_ratio",
+    "amount_to_dest_balance_ratio",
+    "zero_balance_anomaly"
+  ]
+}

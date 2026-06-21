@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}History{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Transaction History</h1>
+  <p class="page-sub">Filter, search, and export all predictions</p>
+</div>
+
+<div class="card filters-card">
+  <div class="filters-row">
+    <div class="form-group">
+      <label>Decision</label>
+      <select id="fDecision">
+        <option value="">All</option>
+        <option value="APPROVE">APPROVE</option>
+        <option value="REVIEW">REVIEW</option>
+        <option value="BLOCK">BLOCK</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Source</label>
+      <select id="fSource">
+        <option value="">All</option>
+        <option value="manual">Manual</option>
+        <option value="simulated">Simulated</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>From Date</label>
+      <input type="date" id="fDateFrom"/>
+    </div>
+    <div class="form-group">
+      <label>To Date</label>
+      <input type="date" id="fDateTo"/>
+    </div>
+    <div class="form-group">
+      <label>Search</label>
+      <input type="text" id="fSearch" placeholder="TXN ID or Account"/>
+    </div>
+    <div class="form-group">
+      <label>Show</label>
+      <select id="fLimit">
+        <option value="25">25</option>
+        <option value="50" selected>50</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+      </select>
+    </div>
+    <div class="form-group filter-btns">
+      <button class="btn btn-primary btn-sm" onclick="loadHistory()">🔍 Filter</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportCSV()">⬇️ CSV</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table class="data-table" id="histTable">
+      <thead><tr>
+        <th>Timestamp</th><th>TXN ID</th><th>Type</th><th>Amount</th>
+        <th>Sender</th><th>Receiver</th><th>ML</th><th>Rules</th>
+        <th>Final</th><th>Decision</th><th>Override</th><th>Actions</th>
+      </tr></thead>
+      <tbody id="histBody"><tr><td colspan="12" class="empty-row">Loading…</td></tr></tbody>
+    </table>
+  </div>
+  <div class="table-footer"><span id="rowCount">0 records</span></div>
+</div>
+
+<!-- Detail Modal -->
+<div id="detailModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Transaction Detail</h3>
+      <button class="modal-close" onclick="closeModal('detailModal')">✕</button>
+    </div>
+    <div id="detailContent" class="modal-body"></div>
+  </div>
+</div>
+
+<!-- Freeze Modal -->
+<div id="freezeModal" class="modal-overlay hidden">
+  <div class="modal-box" style="max-width:420px">
+    <div class="modal-header">
+      <h3>Freeze Account</h3>
+      <button class="modal-close" onclick="closeModal('freezeModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:1rem">Account: <code id="freezeAcctId"></code></p>
+      <div class="form-group">
+        <label>Reason (required)</label>
+        <textarea id="freezeReason" rows="3" placeholder="Reason for freezing this account..."
+          style="width:100%;padding:8px;border:1px solid #E2E8F0;border-radius:6px;font-family:inherit;box-sizing:border-box"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:1rem">
+        <button class="btn btn-secondary" onclick="closeModal('freezeModal')">Cancel</button>
+        <button class="btn btn-danger" onclick="confirmFreeze()">Confirm Freeze</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/history.js"></script>
+{% endblock %}
