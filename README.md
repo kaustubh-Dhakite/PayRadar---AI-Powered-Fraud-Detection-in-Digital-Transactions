@@ -1109,8 +1109,8 @@ xychart-beta
 <table>
 <tr>
 <td align="center" width="200px">
-<a href="https://github.com/yourusername">
-<img src="https://github.com/yourusername.png" width="80px" style="border-radius:50%" alt="Kaustubh" /><br/>
+<a href="https://github.com/kaustubh-Dhakite">
+<img src="https://github.com/kaustubh-Dhakite.png" width="80px" style="border-radius:50%" alt="Kaustubh Dhakite" /><br/>
 <b>Kaustubh</b>
 </a><br/>
 <sub>🏗️ Architecture · 🤖 ML · 🎨 Frontend · 🔧 Backend · 🗄️ Database</sub>
