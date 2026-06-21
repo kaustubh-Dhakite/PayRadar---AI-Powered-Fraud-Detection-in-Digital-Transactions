@@ -1,4 +1,6 @@
-
+<div align="center">
+<img src="assets/banner.png" alt="PayRadar — AI-Powered Fraud Detection Platform" width="100%" />
+<br/>
 
 # 🛡️ PayRadar
 
