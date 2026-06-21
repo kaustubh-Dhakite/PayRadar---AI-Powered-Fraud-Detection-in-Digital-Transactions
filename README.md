@@ -1,6 +1,5 @@
 <div align="center">
-<img src="assets/banner.png" alt="PayRadar — AI-Powered Fraud Detection Platform" width="100%" />
-<br/>
+
 
 # 🛡️ PayRadar
 
@@ -212,36 +211,36 @@ This hybrid design makes PayRadar production-safe: rules act as a guardrail for 
 <div align="center">
 
 ### 🖥️ Main Dashboard
-<img src=<img width="1918" height="866" alt="Screenshot 2026-06-19 142143" src="https://github.com/user-attachments/assets/7d848c73-9891-4bee-8a65-e6498cd6f7ab" /> alt="PayRadar Analytics Dashboard" width="92%" />
+<img width="1918" height="866" alt="Screenshot 2026-06-19 142143" src="https://github.com/user-attachments/assets/1f0f835a-e187-41b0-8cfe-ffa6fa471a62" />
 
 *Real-time fraud KPIs, risk distribution charts, and recent transaction activity — all in one view.*
 
 ---
 
 ### 🎯 Transaction Prediction
-<img src=<img width="1918" height="865" alt="Screenshot 2026-06-19 142327" src="https://github.com/user-attachments/assets/a328079c-7192-40ef-a209-56c5b146829c" /> alt="Transaction Prediction & Scoring Page" width="92%" />
+<img width="1918" height="865" alt="Screenshot 2026-06-19 142327" src="https://github.com/user-attachments/assets/a328079c-7192-40ef-a209-56c5b146829c" /> 
 
 *Submit any transaction payload and receive an instant hybrid risk score with SHAP feature attributions.*
 
 ---
 
 ### 📋 Transaction History
-<img src=<img width="1918" height="863" alt="Screenshot 2026-06-19 142353" src="https://github.com/user-attachments/assets/5fab45f9-d4e1-4d2f-a022-4796d75b4b85" />alt="Transaction History Explorer" width="92%" />
+<img width="1918" height="863" alt="Screenshot 2026-06-19 142353" src="https://github.com/user-attachments/assets/5fab45f9-d4e1-4d2f-a022-4796d75b4b85" />
 
 *Browse, filter, and export the full history of scored transactions with risk labels and scores.*
 
 ---
 
 ### 🔍 Case Management
-<img src=<img width="1918" height="852" alt="Screenshot 2026-06-19 142434" src="https://github.com/user-attachments/assets/489280a6-dadd-4c3f-bd68-a45e965af0f1" />alt="Fraud Investigation Case Management" width="92%" />
+<img width="1918" height="852" alt="Screenshot 2026-06-19 142434" src="https://github.com/user-attachments/assets/489280a6-dadd-4c3f-bd68-a45e965af0f1" />
 
 *Full investigation lifecycle: create, assign, update status, add notes, and resolve fraud cases.*
 
 ---
 
 ### 📊 Model Monitor
-<img src=<img width="1918" height="862" alt="Screenshot 2026-06-19 142541" src="https://github.com/user-attachments/assets/1bf9ce95-50ec-40c9-9e53-6204f3c5d73e" />
- alt="ML Model Performance Monitor" width="92%" />
+<img width="1918" height="862" alt="Screenshot 2026-06-19 142541" src="https://github.com/user-attachments/assets/1bf9ce95-50ec-40c9-9e53-6204f3c5d73e" />
+
 
 *Live tracking of model accuracy, precision, recall, AUC-ROC, and feature importance drift.*
 
@@ -249,89 +248,13 @@ This hybrid design makes PayRadar production-safe: rules act as a guardrail for 
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ System Block Diagram
 
 <div align="center">
-<img src="assets/architecture.png" alt="PayRadar System Architecture" width="88%" />
+<img width="2197" height="1192" alt="F_block" src="https://github.com/user-attachments/assets/84acd95e-5ae8-411b-82d7-5786265a0dc7" />
 </div>
 
-```mermaid
-graph TB
-    subgraph CLIENT["🖥️ Client Layer"]
-        BROWSER[Web Browser]
-        subgraph PAGES["Application Pages"]
-            direction LR
-            PG1[Dashboard]
-            PG2[Predict]
-            PG3[History]
-            PG4[Cases]
-            PG5[Accounts]
-            PG6[Model Monitor]
-            PG7[Settings]
-            PG8[Users]
-        end
-    end
 
-    subgraph APPSERVER["⚡ FastAPI Application Server"]
-        direction TB
-        MIDDLEWARE[Auth & Session Middleware]
-        JINJA[Jinja2 Template Engine]
-        subgraph ROUTES["API Routers"]
-            direction LR
-            RT1[/api/predict]
-            RT2[/api/transactions]
-            RT3[/api/cases]
-            RT4[/api/accounts]
-            RT5[/api/users]
-            RT6[/api/dashboard]
-        end
-    end
-
-    subgraph ENGINE["🧠 Fraud Detection Engine"]
-        HYBRID["⚡ Hybrid Scorer\n0.6 × ML + 0.4 × Rules"]
-        subgraph MLPATH["ML Path"]
-            direction TB
-            SCALE[NumPy StandardScaler]
-            XGB[XGBoost Classifier]
-            SHAP_E[SHAP Explainer]
-            SCALE --> XGB --> SHAP_E
-        end
-        subgraph RULEPATH["Rule Path"]
-            direction TB
-            R1[High Amount]
-            R2[Odd Hour]
-            R3[Balance Drain]
-            R4[Dest Anomaly]
-            R5[High Risk Type]
-            R6[Velocity Attack]
-            R7[Frozen Account]
-        end
-        HYBRID --> MLPATH
-        HYBRID --> RULEPATH
-    end
-
-    subgraph PERSISTENCE["🗄️ MySQL 8.0 Database"]
-        direction LR
-        TB1[(users)]
-        TB2[(sessions)]
-        TB3[(predictions)]
-        TB4[(cases)]
-        TB5[(accounts)]
-        TB6[(audit_log)]
-        TB7[(rule_config)]
-        TB8[(app_settings)]
-    end
-
-    CLIENT --> APPSERVER
-    APPSERVER --> MIDDLEWARE
-    MIDDLEWARE --> ROUTES
-    ROUTES --> ENGINE
-    RULEPATH --> TB7
-    ENGINE --> PERSISTENCE
-    PERSISTENCE --> APPSERVER
-    APPSERVER --> JINJA
-    JINJA --> CLIENT
-```
 
 ---
 
