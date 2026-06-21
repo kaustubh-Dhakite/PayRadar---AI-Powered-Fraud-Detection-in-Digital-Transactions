@@ -214,35 +214,36 @@ This hybrid design makes PayRadar production-safe: rules act as a guardrail for 
 <div align="center">
 
 ### 🖥️ Main Dashboard
-<img src="assets/dashboard.png" alt="PayRadar Analytics Dashboard" width="92%" />
+<img src=<img width="1918" height="866" alt="Screenshot 2026-06-19 142143" src="https://github.com/user-attachments/assets/7d848c73-9891-4bee-8a65-e6498cd6f7ab" /> alt="PayRadar Analytics Dashboard" width="92%" />
 
 *Real-time fraud KPIs, risk distribution charts, and recent transaction activity — all in one view.*
 
 ---
 
 ### 🎯 Transaction Prediction
-<img src="assets/predict-page.png" alt="Transaction Prediction & Scoring Page" width="92%" />
+<img src=<img width="1918" height="865" alt="Screenshot 2026-06-19 142327" src="https://github.com/user-attachments/assets/a328079c-7192-40ef-a209-56c5b146829c" /> alt="Transaction Prediction & Scoring Page" width="92%" />
 
 *Submit any transaction payload and receive an instant hybrid risk score with SHAP feature attributions.*
 
 ---
 
 ### 📋 Transaction History
-<img src="assets/history-page.png" alt="Transaction History Explorer" width="92%" />
+<img src=<img width="1918" height="863" alt="Screenshot 2026-06-19 142353" src="https://github.com/user-attachments/assets/5fab45f9-d4e1-4d2f-a022-4796d75b4b85" />alt="Transaction History Explorer" width="92%" />
 
 *Browse, filter, and export the full history of scored transactions with risk labels and scores.*
 
 ---
 
 ### 🔍 Case Management
-<img src="assets/cases-page.png" alt="Fraud Investigation Case Management" width="92%" />
+<img src=<img width="1918" height="852" alt="Screenshot 2026-06-19 142434" src="https://github.com/user-attachments/assets/489280a6-dadd-4c3f-bd68-a45e965af0f1" />alt="Fraud Investigation Case Management" width="92%" />
 
 *Full investigation lifecycle: create, assign, update status, add notes, and resolve fraud cases.*
 
 ---
 
 ### 📊 Model Monitor
-<img src="assets/model-monitor.png" alt="ML Model Performance Monitor" width="92%" />
+<img src=<img width="1918" height="862" alt="Screenshot 2026-06-19 142541" src="https://github.com/user-attachments/assets/1bf9ce95-50ec-40c9-9e53-6204f3c5d73e" />
+ alt="ML Model Performance Monitor" width="92%" />
 
 *Live tracking of model accuracy, precision, recall, AUC-ROC, and feature importance drift.*
 
@@ -1255,7 +1256,7 @@ If you'd like to contribute, please fork the repository, create a feature branch
 ```
 MIT License
 
-Copyright (c) 2024 Kaustubh
+Copyright (c) 2026 Kaustubh
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
